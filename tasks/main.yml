@@ -1,0 +1,10 @@
+---
+# tasks file for balancer-ansible-role
+
+- name: Install LVS balancer
+  include: install.yml
+  when: balancer_state == "present"
+
+- name: Uninstall LVS balancer
+  include: uninstall.yml
+  when: balancer_state == "absent"
