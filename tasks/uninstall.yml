@@ -1,0 +1,16 @@
+--- 
+# tasks file for uninstall
+- name: (uninstall) Stop keepalived if running
+  systemd:
+    name: keepalived
+    state: stopped
+  ignore_errors: yes
+
+- name: (uninstall) Uninstall keepalived and ipvsadm
+  yum:
+    name:
+      - keepalived
+      - ipvsadm
+    state: absent
+    autoremove: yes
+

@@ -1,2 +1,7 @@
 ---
 # handlers file for balancer-ansible-role
+- name: restart keepalived
+  systemd:
+    name: keepalived
+    state: restarted
+

@@ -3,6 +3,7 @@
   yum:
     name:
       - keepalived
+      - ipvsadm
     state: present
     update_cache: yes
 
@@ -10,6 +11,6 @@
   template:
     src: "keepalived.conf.j2"
     dest: "/etc/keepalived/keepalived.conf"
-#  notify: restart keepalived
+  notify: restart keepalived
 
 

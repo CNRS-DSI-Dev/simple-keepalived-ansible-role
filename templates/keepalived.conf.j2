@@ -10,13 +10,31 @@ global_defs {
    router_id LVS_MASTER
 }
 
-vrrp_instance {{ vs.name }} {
+# Gateway for real servers
+vrrp_instance gateway {
    state MASTER
-   interface eth0
+   interface ens224
    virtual_router_id 100
    priority 100
    advert_int 1
-   lvs_sync_daemon_interface eth0
+   lvs_sync_daemon_interface ens224
+   authentication {
+        auth_type PASS
+        auth_pass {{ balancer_passwd }}
+   }
+   virtual_ipaddress {
+        {{ balancer_gateway }}
+   }
+}
+
+# VIP {{ vs.name }}
+vrrp_instance {{ vs.name }} {
+   state MASTER
+   interface ens224
+   virtual_router_id 100
+   priority 100
+   advert_int 1
+   lvs_sync_daemon_interface ens224
    authentication {
         auth_type PASS
         auth_pass bla
@@ -26,6 +44,7 @@ vrrp_instance {{ vs.name }} {
    }
 }
 
+# VS {{ vs.name }}
 virtual_server {{ vs.vip }} {{ vs.port }} {
     delay_loop 6
     lb_algo wrr
