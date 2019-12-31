@@ -1,0 +1,44 @@
+# {{ ansible_managed }}
+
+global_defs {
+   notification_email {
+     {{ admin_mail }}
+   }
+   notification_email_from {{ balancer_mail }}
+   smtp_server 192.168.0.10
+   smtp_connect_timeout 30
+   router_id LVS_MASTER
+}
+
+vrrp_instance {{ vs.name }} {
+   state MASTER
+   interface eth0
+   virtual_router_id 100
+   priority 100
+   advert_int 1
+   lvs_sync_daemon_interface eth0
+   authentication {
+        auth_type PASS
+        auth_pass bla
+   }
+   virtual_ipaddress {
+        {{ vs.vip }}
+   }
+}
+
+virtual_server {{ vs.vip }} {{ vs.port }} {
+    delay_loop 6
+    lb_algo wrr
+    lb_kind NAT
+    persistence_timeout 50
+    protocol TCP
+
+    real_server {{ vs.server.ip }} {{ vs.server.port }} {
+        weight 1
+        restart_service
+        TCP_CHECK {
+                connect_timeout 3
+        	connect_port {{ vs.server.port }}
+        } 
+    }
+}

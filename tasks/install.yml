@@ -1,0 +1,15 @@
+---
+- name: Install required RPMs
+  yum:
+    name:
+      - keepalived
+    state: present
+    update_cache: yes
+
+- name: Create main configuration file from template
+  template:
+    src: "keepalived.conf.j2"
+    dest: "/etc/keepalived/keepalived.conf"
+#  notify: restart keepalived
+
+
