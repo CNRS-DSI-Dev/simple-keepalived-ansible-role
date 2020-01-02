@@ -1,20 +1,19 @@
 # {{ ansible_managed }}
 
 global_defs {
-#   notification_email {
-#     {{ keepalived_admin }}
-#   }
-#   notification_email_from {{ keepalived_mail }}
-#   smtp_server 192.168.0.10
-#   smtp_connect_timeout 30
-#   router_id LVS_MASTER
+   notification_email {
+     {{ keepalived_admin }}
+   }
+   notification_email_from {{ keepalived_mail }}
+   smtp_server cst.users.interne
+   smtp_connect_timeout 30
+   router_id {{ inventory_hostname }}
 }
 
-# Check local {{ keepalived_process }} process
+# Check local {{ keepalived_process }} process each 5 seconds
 vrrp_script check_process {
         script "pidof {{ keepalived_process }}"
-        interval 2
-	weight 2
+        interval 5
 }
 
 # VIP {{ keepalived_vip }}
