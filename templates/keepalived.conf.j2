@@ -1,29 +1,31 @@
-# {{ ansible_managed }}
+# {{ ansible_managed | comment }}
 
 global_defs {
-   notification_email {
-     {{ keepalived_admin }}
-   }
-   notification_email_from {{ keepalived_mail }}
-   smtp_server cst.users.interne
-   smtp_connect_timeout 30
-   router_id {{ inventory_hostname }}
+	router_id LVS-{{ inventory_hostname }}
+
+	smtp_server 127.0.0.1
+	smtp_connect_timeout 30
+	notification_email_from {{ keepalived_mail }}
+	notification_email {
+		{{ keepalived_admin }}
+	}
 }
 
-# Check local {{ keepalived_process }} process each 5 seconds
+# Check local {{ keepalived_process }} process each {{ keepalived_check_interval }} seconds
 vrrp_script check_process {
-        script "pidof {{ keepalived_process }}"
-        interval 5
+        script "/usr/sbin/pidof {{ keepalived_process }}"
+        interval {{ keepalived_check_interval }}
 }
 
 # VIP {{ keepalived_vip }}
 vrrp_instance VIP {
 {% if keepalived_master == inventory_hostname %}
 	state MASTER
-	priority 100
+	priority {{ keepalived_master_priority }}
+#	smtp_alert
 {% else %}
 	state BACKUP
-	priority 1
+	priority {{ keepalived_backup_priority }}
 {% endif %}
 	virtual_router_id 50
 	interface {{ keepalived_interface }}

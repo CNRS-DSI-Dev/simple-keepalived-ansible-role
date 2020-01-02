@@ -1,9 +1,17 @@
 ---
-# defaults file for balancer-ansible-role
+# defaults file for simple-keepalived-ansible-role
 
-balancer_state: "present"
+# Require vars, please overide them
+keepalived_state: "present"
+keepalived_process: "keepalived"
+keepalived_master: "localhost"
+keepalived_mail: "keepalived@example.com"
+keepalived_admin: "admin@example.com"
+keepalived_passwd: "toto"
+keepalived_interface: "eth0"
+keepalived_vip: "192.168.100.1"
 
-balancer_mail: "keepalived@example.com"
-admin_mail: "admin@example.com"
-
-balancer_passwd: "toto"
+# Optinal vars
+keepalived_check_interval: "5"
+keepalived_master_priority: "100"
+keepalived_backup_priority: "1"
