@@ -6,6 +6,11 @@
     state: present
     update_cache: yes
 
+- name: Enable keepalived on boot
+  systemd:
+    name: keepalived
+    enabled: yes
+
 - name: Create main configuration file from template
   template:
     src: "keepalived.conf.j2"
