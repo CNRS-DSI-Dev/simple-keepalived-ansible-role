@@ -1,2 +1,9 @@
 ---
 # defaults file for balancer-ansible-role
+
+balancer_state: "present"
+
+balancer_mail: "keepalived@example.com"
+admin_mail: "admin@example.com"
+
+balancer_passwd: "toto"
