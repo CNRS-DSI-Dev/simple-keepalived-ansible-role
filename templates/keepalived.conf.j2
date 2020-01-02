@@ -2,33 +2,42 @@
 
 global_defs {
 #   notification_email {
-#     {{ admin_mail }}
+#     {{ keepalived_admin }}
 #   }
-#   notification_email_from {{ balancer_mail }}
+#   notification_email_from {{ keepalived_mail }}
 #   smtp_server 192.168.0.10
 #   smtp_connect_timeout 30
 #   router_id LVS_MASTER
 }
 
+# Check local {{ keepalived_process }} process
+vrrp_script check_process {
+        script "pidof {{ keepalived_process }}"
+        interval 2
+	weight 2
+}
+
 # VIP {{ keepalived_vip }}
 vrrp_instance VIP {
 {% if keepalived_master == inventory_hostname %}
-   state MASTER
-   virtual_router_id 100
-   priority 100
+	state MASTER
+	priority 100
 {% else %}
-   state BACKUP
-   virtual_router_id 50
-   priority 100
+	state BACKUP
+	priority 1
 {% endif %}
-   interface {{ keepalived_interface }}
-   advert_int 1
-   authentication {
-        auth_type PASS
-        auth_pass {{ keepalived_passwd }}
-   }
-   virtual_ipaddress {
-        {{ keepalived_vip }}
-   }
+	virtual_router_id 50
+	interface {{ keepalived_interface }}
+	advert_int 2
+	authentication {
+        	auth_type PASS
+	        auth_pass {{ keepalived_passwd }}
+	}
+        track_script {
+                check_process
+        }
+	virtual_ipaddress {
+        	{{ keepalived_vip }}
+	}
 }
 
