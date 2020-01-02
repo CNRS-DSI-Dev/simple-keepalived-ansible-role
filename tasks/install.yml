@@ -3,7 +3,6 @@
   yum:
     name:
       - keepalived
-      - ipvsadm
     state: present
     update_cache: yes
 

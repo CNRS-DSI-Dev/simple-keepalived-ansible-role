@@ -27,7 +27,7 @@ vrrp_instance VIP {
 	state BACKUP
 	priority {{ keepalived_backup_priority }}
 {% endif %}
-	virtual_router_id 50
+	virtual_router_id {{ keepalived_routerid }}
 	interface {{ keepalived_interface }}
 	advert_int 2
 	authentication {

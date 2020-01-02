@@ -1,10 +1,10 @@
 ---
-# tasks file for balancer-ansible-role
+# tasks file for simple-keepalived-ansible-role
 
-- name: Install LVS balancer
+- name: Install keepalived and configure failover
   include: install.yml
   when: keepalived_state == "present"
 
-- name: Uninstall LVS balancer
+- name: Uninstall keepalived
   include: uninstall.yml
   when: keepalived_state == "absent"
