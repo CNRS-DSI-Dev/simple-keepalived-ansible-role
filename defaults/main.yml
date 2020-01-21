@@ -6,7 +6,7 @@ keepalived_state: "present"
 keepalived_process: "keepalived"
 keepalived_routerid: "50"
 keepalived_master: "localhost"
-keepalived_alert: "false"
+keepalived_alert: false
 keepalived_mail: "keepalived@example.com"
 keepalived_admin: "admin@example.com"
 keepalived_passwd: "toto"
