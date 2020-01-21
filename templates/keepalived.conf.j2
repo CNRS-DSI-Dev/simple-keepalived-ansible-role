@@ -22,12 +22,12 @@ vrrp_instance VIP {
 {% if keepalived_master == inventory_hostname %}
 	state MASTER
 	priority {{ keepalived_master_priority }}
-{% if keepalived_alert is defined and keepalived_alert is sameas true %}
-	smtp_alert
-{% endif %}
 {% else %}
 	state BACKUP
 	priority {{ keepalived_backup_priority }}
+{% endif %}
+{% if keepalived_alert is defined and keepalived_alert is sameas true %}
+        smtp_alert
 {% endif %}
 	virtual_router_id {{ keepalived_routerid }}
 	interface {{ keepalived_interface }}
