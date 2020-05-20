@@ -32,6 +32,16 @@ vrrp_instance VIP {
 {% endif %}
 	virtual_router_id {{ keepalived_routerid }}
 	interface {{ keepalived_interface }}
+{% if keepalived_unicast is defined and keepalived_unicast is sameas true %}
+	unicast_src_ip {{ hostvars[inventory_hostname]['ansible_facts'][keepalived_interface]['ipv4']['address'] }}
+	unicast_peer {
+	{% if inventory_hostname == keepalived_master %}
+                {{ hostvars[keepalived_backup]['ansible_facts'][keepalived_interface]['ipv4']['address'] }}
+	{% else %}
+                {{ hostvars[keepalived_master]['ansible_facts'][keepalived_interface]['ipv4']['address'] }}
+	{% endif %}
+        }
+{% endif %}
 	advert_int 2
 	authentication {
         	auth_type PASS

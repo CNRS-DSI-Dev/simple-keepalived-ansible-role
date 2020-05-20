@@ -6,9 +6,6 @@ keepalived_state: "present"
 keepalived_process: "keepalived"
 keepalived_routerid: "50"
 keepalived_master: "localhost"
-keepalived_alert: false
-keepalived_mail: "keepalived@example.com"
-keepalived_admin: "admin@example.com"
 keepalived_passwd: "toto"
 keepalived_interface: "eth0"
 keepalived_vip: "192.168.100.1"
@@ -17,3 +14,7 @@ keepalived_vip: "192.168.100.1"
 keepalived_check_interval: "5"
 keepalived_master_priority: "100"
 keepalived_backup_priority: "1"
+keepalived_unicast: false
+keepalived_alert: false
+keepalived_mail: "keepalived@example.com"
+keepalived_admin: "admin@example.com"
