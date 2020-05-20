@@ -1,5 +1,6 @@
 # {{ ansible_managed | comment }}
 
+# Node configuration
 global_defs {
 	router_id LVS-{{ inventory_hostname }}
 
@@ -17,7 +18,7 @@ vrrp_script check_process {
         interval {{ keepalived_check_interval }}
 }
 
-# VIP {{ keepalived_vip }}
+# Virtual router configuration
 vrrp_instance VIP {
 {% if keepalived_master == inventory_hostname %}
 	state MASTER
@@ -40,7 +41,13 @@ vrrp_instance VIP {
                 check_process
         }
 	virtual_ipaddress {
-        	{{ keepalived_vip }}
+{% if keepalived_vip is string %}
+                {{ keepalived_vip }} label {{ keepalived_interface }}:1
+{% else %}
+        {% for vip in keepalived_vip %}
+                {{ vip }} label {{ keepalived_interface }}:{{ loop.index }}
+        {% endfor %}
+{% endif %}
 	}
 }
 
