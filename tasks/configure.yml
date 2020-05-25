@@ -11,7 +11,7 @@
     - name: Set logfacility 6 in keepalived options
       replace:
         path: /etc/sysconfig/keepalived
-        regexp: '^KEEPALIVED_OPTIONS= .*$'
+        regexp: '^KEEPALIVED_OPTIONS=.*$'
         replace: 'KEEPALIVED_OPTIONS="-D --log-facility=6"'
       notify: restart keepalived
 
