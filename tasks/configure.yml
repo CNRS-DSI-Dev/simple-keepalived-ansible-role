@@ -1,0 +1,35 @@
+---
+- name: Main configuration file from template
+  template:
+    src: "keepalived.conf.j2"
+    dest: "/etc/keepalived/keepalived.conf"
+  notify: restart keepalived
+
+#dedicated logfile
+- name: Dedicated logfile if keepalived_logfile is defined
+  block:
+    - name: Set logfacility 6 in keepalived options
+      replace:
+        path: /etc/sysconfig/keepalived
+        regexp: '^KEEPALIVED_OPTIONS= .*$'
+        replace: 'KEEPALIVED_OPTIONS="-D --log-facility=6"'
+      notify: restart keepalived
+
+    - name: Rsyslog conf for keepalived
+      copy:
+        content: "local6.* {{ keepalived_logfile }}"
+        dest: "/etc/rsyslog.d/keepalived.conf"
+        owner: "root"
+        group: "root"
+        mode: 0644
+      notify: restart rsyslog
+
+    - name: Logrotate conf for keepalived
+      template:
+        src: "keepalived.logrotate.j2"
+        dest: "/etc/logrotate.d/keepalived"
+        owner: "root"
+        group: "root"
+        mode: 0644
+
+  when: keepalived_logfile is defined

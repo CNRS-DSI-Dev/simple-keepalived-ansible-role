@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+{{ keepalived_logfile }} {
+    missingok
+    notifempty
+    weekly
+    rotate {{ keepalived_history }}
+    dateext
+    compress
+}
+

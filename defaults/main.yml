@@ -18,3 +18,9 @@ keepalived_unicast: false
 keepalived_alert: false
 keepalived_mail: "keepalived@example.com"
 keepalived_admin: "admin@example.com"
+
+# Logging - by default in /var/log/messages
+# define keepalived_logfile variable if you want a dedicated logfile
+#keepalived_logfile: "/var/log/keepalived.log"
+keepalived_history: "2"
+

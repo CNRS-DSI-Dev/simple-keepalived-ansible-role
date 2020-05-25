@@ -11,10 +11,3 @@
     name: keepalived
     enabled: yes
 
-- name: Create main configuration file from template
-  template:
-    src: "keepalived.conf.j2"
-    dest: "/etc/keepalived/keepalived.conf"
-  notify: restart keepalived
-
-
