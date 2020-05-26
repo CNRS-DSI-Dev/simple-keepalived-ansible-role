@@ -1,0 +1,45 @@
+# Virtual router configuration
+vrrp_instance VIP {
+{% if keepalived_master == inventory_hostname %}
+        state MASTER
+        priority {{ keepalived_master_priority }}
+{% else %}
+        state BACKUP
+        priority {{ keepalived_backup_priority }}
+{% endif %}
+{% if keepalived_alert is defined and keepalived_alert is sameas true %}
+        smtp_alert
+{% endif %}
+        virtual_router_id {{ keepalived_routerid }}
+        interface {{ keepalived_interface }}
+{% if keepalived_unicast is defined and keepalived_unicast is sameas true %}
+        unicast_src_ip {{ hostvars[inventory_hostname]['ansible_facts'][keepalived_interface]['ipv4']['address'] }}
+        unicast_peer {
+        {% if inventory_hostname == keepalived_master %}
+                {{ hostvars[keepalived_backup]['ansible_facts'][keepalived_interface]['ipv4']['address'] }}
+        {% else %}
+                {{ hostvars[keepalived_master]['ansible_facts'][keepalived_interface]['ipv4']['address'] }}
+        {% endif %}
+        }
+{% endif %}
+        advert_int 2
+        authentication {
+                auth_type PASS
+                auth_pass {{ keepalived_passwd }}
+        }
+{% if keepalived_mode == "failover" %}
+        track_script {
+                check_process
+        }
+{% endif %}
+        virtual_ipaddress {
+{% if keepalived_vip is string %}
+                {{ keepalived_vip }} label {{ keepalived_interface }}:1
+{% else %}
+{% for vip in keepalived_vip %}
+                {{ vip }} label {{ keepalived_interface }}:{{ loop.index }}
+{% endfor %}
+{% endif %}
+        }
+}
+

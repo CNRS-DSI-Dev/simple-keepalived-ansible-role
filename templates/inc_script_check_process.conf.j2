@@ -1,0 +1,5 @@
+# Check local {{ keepalived_process }} process each {{ keepalived_check_interval }} seconds
+vrrp_script check_process {
+        script "/usr/sbin/pidof {{ keepalived_process }}"
+        interval {{ keepalived_check_interval }}
+}

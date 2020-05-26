@@ -1,63 +1,23 @@
 {{ ansible_managed | comment }}
 
-# Node configuration
-global_defs {
-	router_id LVS-{{ inventory_hostname }}
+{#
+    Real router configuration : Node name, alert settings, etc
+#}
+{% include 'inc_global_defs.conf.j2' %}
 
-	smtp_server 127.0.0.1
-	smtp_connect_timeout 30
-	notification_email_from {{ keepalived_mail }}
-	notification_email {
-		{{ keepalived_admin }}
-	}
-}
+{# In failover mode, keepalived check a local process like haproxy or httpd #}
+{% if keepalived_mode == "failover" %}
+{% include 'inc_script_check_process.conf.j2' %}
+{% endif %}
 
-# Check local {{ keepalived_process }} process each {{ keepalived_check_interval }} seconds
-vrrp_script check_process {
-        script "/usr/sbin/pidof {{ keepalived_process }}"
-        interval {{ keepalived_check_interval }}
-}
+{#
+    Virtual router configuration : VIP, priority, etc
+#}
+{% include 'inc_vrrp_instance.conf.j2' %}
 
-# Virtual router configuration
-vrrp_instance VIP {
-{% if keepalived_master == inventory_hostname %}
-	state MASTER
-	priority {{ keepalived_master_priority }}
-{% else %}
-	state BACKUP
-	priority {{ keepalived_backup_priority }}
+{#
+    Virtual servers configuration
+#}
+{% if keepalived_mode == "ha" %}
+{% include 'inc_virtual_server.conf.j2' %}
 {% endif %}
-{% if keepalived_alert is defined and keepalived_alert is sameas true %}
-        smtp_alert
-{% endif %}
-	virtual_router_id {{ keepalived_routerid }}
-	interface {{ keepalived_interface }}
-{% if keepalived_unicast is defined and keepalived_unicast is sameas true %}
-	unicast_src_ip {{ hostvars[inventory_hostname]['ansible_facts'][keepalived_interface]['ipv4']['address'] }}
-	unicast_peer {
-	{% if inventory_hostname == keepalived_master %}
-                {{ hostvars[keepalived_backup]['ansible_facts'][keepalived_interface]['ipv4']['address'] }}
-	{% else %}
-                {{ hostvars[keepalived_master]['ansible_facts'][keepalived_interface]['ipv4']['address'] }}
-	{% endif %}
-        }
-{% endif %}
-	advert_int 2
-	authentication {
-        	auth_type PASS
-	        auth_pass {{ keepalived_passwd }}
-	}
-        track_script {
-                check_process
-        }
-	virtual_ipaddress {
-{% if keepalived_vip is string %}
-                {{ keepalived_vip }} label {{ keepalived_interface }}:1
-{% else %}
-        {% for vip in keepalived_vip %}
-                {{ vip }} label {{ keepalived_interface }}:{{ loop.index }}
-        {% endfor %}
-{% endif %}
-	}
-}
-
