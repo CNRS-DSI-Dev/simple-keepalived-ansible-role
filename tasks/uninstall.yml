@@ -10,6 +10,7 @@
   yum:
     name:
       - keepalived
+      - ipvsadm
     state: absent
     autoremove: yes
 

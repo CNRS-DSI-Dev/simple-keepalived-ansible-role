@@ -10,6 +10,9 @@ keepalived_passwd: "toto"
 keepalived_interface: "eth0"
 keepalived_vip: "192.168.100.1"
 
+# Mode failover or ha
+keepalived_mode: "failover"
+
 # Optional vars
 keepalived_check_interval: "5"
 keepalived_master_priority: "100"
