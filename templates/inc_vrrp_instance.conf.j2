@@ -37,7 +37,7 @@ vrrp_instance VIP {
                 {{ keepalived_vip }} label {{ keepalived_interface }}:1
 {% else %}
 {% for vip in keepalived_vip %}
-                {{ vip }} label {{ keepalived_interface }}:{{ loop.index }}
+                {{ vip.vip }} label {{ keepalived_interface }}:{{ loop.index }} #{{ vip.name }}
 {% endfor %}
 {% endif %}
         }

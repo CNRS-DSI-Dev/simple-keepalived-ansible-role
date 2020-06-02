@@ -1,5 +1,6 @@
-# Virtual server 
-virtual_server 10.245.4.12 636 {
+{% for vip in keepalived_vip %}
+# Virtual server {{ vip.name }}
+virtual_server {{ vip.vip }} {{ vip.port }} {
     delay_loop 10
     protocol TCP
     lb_algo rr
@@ -7,12 +8,16 @@ virtual_server 10.245.4.12 636 {
     nat_mask 255.255.255.0
     persistence_timeout 7200
 
-    real_server 10.245.201.79 80 {
-        weight 1
+{% for server in vip.servers %}
+    # {{ server.name }}
+    real_server {{ server.ip }} {{ server.port }} {
+        weight {{ server.weight }}
         TCP_CHECK {
           connect_timeout 5
-          connect_port 80
+          connect_port {{ server.port }}
         }
     }
+{% endfor %}
 }
 
+{% endfor %}

@@ -3,7 +3,6 @@
 
 # Require vars, please overide them
 keepalived_state: "present"
-keepalived_process: "keepalived"
 keepalived_routerid: "50"
 keepalived_master: "localhost"
 keepalived_passwd: "toto"
@@ -12,6 +11,21 @@ keepalived_vip: "192.168.100.1"
 
 # Mode failover or ha
 keepalived_mode: "failover"
+
+# Failover options
+keepalived_process: "keepalived"
+keepalived_vip: 192.168.100.1
+
+# HA options
+#keepalived_vip:
+#- name: "example"
+#  vip: 192.168.100.1
+#  port: 8080
+#  servers:
+#  - name: "node1"
+#    ip: 172.0.0.1
+#    port: 8080
+#    weight: 1
 
 # Optional vars
 keepalived_check_interval: "5"
