@@ -11,10 +11,16 @@ virtual_server {{ vip.vip }} {{ vip.port }} {
     # {{ server.name }}
     real_server {{ server.ip }} {{ server.port }} {
         weight {{ server.weight }}
-        TCP_CHECK {
-          connect_timeout 5
-          connect_port {{ server.port }}
+{% if vip.check_script is defined %}
+        MISC_CHECK {
+          misc_path "/etc/keepalived/{{ vip.check_script }} {{ server.ip }} {{ server.port }}"
         }
+{% else %}
+        TCP_CHECK {
+          connect_port {{ server.port }}
+          connect_timeout 5
+        }
+{% endif %}
     }
 {% endfor %}
 }

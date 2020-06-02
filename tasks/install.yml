@@ -12,3 +12,12 @@
     name: keepalived
     enabled: yes
 
+- name: Copy check scripts files to /etc/keepalived
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/keepalived/"
+    owner: "root"
+    group: "root"
+    mode: 0755
+  with_fileglob: "check_*"
+

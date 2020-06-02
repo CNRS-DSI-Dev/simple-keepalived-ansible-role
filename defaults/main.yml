@@ -21,6 +21,7 @@ keepalived_vip: 192.168.100.1
 #- name: "example"
 #  vip: 192.168.100.1
 #  port: 8080
+#  (check_script: "check_ldaps.sh")
 #  servers:
 #  - name: "node1"
 #    ip: 172.0.0.1
