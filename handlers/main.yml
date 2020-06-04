@@ -9,3 +9,6 @@
   systemd:
     name: rsyslog
     state: restarted
+
+- name: read conntrack
+  shell: /sbin/sysctl -p /etc/sysctl.d/conntrack.conf

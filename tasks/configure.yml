@@ -33,3 +33,25 @@
         mode: 0644
 
   when: keepalived_logfile is defined
+
+#network conf for ha mode
+- name: NAT configuration when high availability mode is enable
+  block:
+    - name: Enable conntrack
+      copy:
+        content: "net.ipv4.vs.conntrack=1"
+        dest: "/etc/sysctl.d/conntrack.conf"
+        owner: "root"
+        group: "root"
+        mode: 0644
+      notify: read conntrack
+
+    - name: Enable masquerade
+      firewalld:
+        zone: trusted
+        masquerade: yes
+        state: enabled
+        permanent: yes
+
+  when: keepalived_mode == "ha"
+
