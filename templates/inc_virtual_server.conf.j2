@@ -3,7 +3,7 @@
 virtual_server {{ vip.vip }} {{ vip.port }} {
     delay_loop 10 #interval check in seconds
     protocol TCP
-    lvs_sched wlc #weighted least-connections 
+    lvs_sched wrr #weighted round-robin
     lvs_method NAT
     persistence_timeout 7200
 
