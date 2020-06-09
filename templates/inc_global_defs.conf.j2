@@ -8,4 +8,9 @@ global_defs {
         notification_email {
                 {{ keepalived_admin }}
         }
+{% if keepalived_alert is defined and keepalived_alert is sameas true %}
+        smtp_alert true
+{% else %}
+	smtp_alert false
+{% endif %}
 }
