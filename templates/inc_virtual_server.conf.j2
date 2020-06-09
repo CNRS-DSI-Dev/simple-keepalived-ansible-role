@@ -1,16 +1,16 @@
 {% for vip in keepalived_vip %}
 # Virtual server {{ vip.name }}
 virtual_server {{ vip.vip }} {{ vip.port }} {
-    delay_loop 10
+    delay_loop 10 #interval check in seconds
     protocol TCP
-    lb_algo rr
-    lb_kind NAT
+    lvs_sched wlc #weighted least-connections 
+    lvs_method NAT
     persistence_timeout 7200
 
 {% for server in vip.servers %}
     # {{ server.name }}
     real_server {{ server.ip }} {{ server.port }} {
-        weight {{ server.weight }}
+        weight {{ server.weight }} #ratio used by lvs_scheduler
 {% if vip.check_script is defined %}
         MISC_CHECK {
           misc_path "/etc/keepalived/{{ vip.check_script }} {{ server.ip }} {{ server.port }}"
