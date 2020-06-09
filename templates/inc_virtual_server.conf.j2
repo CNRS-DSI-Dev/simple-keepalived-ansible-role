@@ -6,6 +6,7 @@ virtual_server {{ vip.vip }} {{ vip.port }} {
     lvs_sched wrr #weighted round-robin
     lvs_method NAT
     persistence_timeout 7200
+    ha_suspend #if node is backup for current VIP, dont check real servers
 
 {% for server in vip.servers %}
     # {{ server.name }}
