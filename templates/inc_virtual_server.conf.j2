@@ -9,6 +9,11 @@ virtual_server {{ vip.vip }} {{ vip.port }} {
     ha_suspend #if node is backup for current VIP, dont check real servers
 
 {% for server in vip.servers %}
+{% if server.weight == 0 %}
+    # backup real server if all other real servers are down
+    sorry_server {{ server.ip }} {{ server.port }}
+
+{% else %}
     # {{ server.name }}
     real_server {{ server.ip }} {{ server.port }} {
         weight {{ server.weight }} #ratio used by lvs_scheduler
@@ -23,6 +28,7 @@ virtual_server {{ vip.vip }} {{ vip.port }} {
         }
 {% endif %}
     }
+{% endif %}
 {% endfor %}
 }
 
