@@ -12,7 +12,6 @@ virtual_server {{ vip.vip }} {{ vip.port }} {
 {% if server.weight == 0 %}
     # backup real server if all other real servers are down
     sorry_server {{ server.ip }} {{ server.port }}
-
 {% else %}
     # {{ server.name }}
     real_server {{ server.ip }} {{ server.port }} {
