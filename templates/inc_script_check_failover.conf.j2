@@ -1,0 +1,5 @@
+# Check script for failover mode, process each {{ keepalived_check_interval }} seconds
+vrrp_script check_process {
+        script "{{ keepalived_check_failover }}"
+        interval {{ keepalived_check_interval }}
+}
