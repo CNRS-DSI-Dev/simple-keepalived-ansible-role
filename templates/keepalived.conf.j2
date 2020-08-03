@@ -5,9 +5,9 @@
 #}
 {% include 'inc_global_defs.conf.j2' %}
 
-{# In failover mode, keepalived check a local process like haproxy or httpd #}
+{# In failover mode, keepalived check local with custom script #}
 {% if keepalived_mode == "failover" %}
-{% include 'inc_script_check_process.conf.j2' %}
+{% include 'inc_script_check_failover.conf.j2' %}
 {% endif %}
 
 {#
