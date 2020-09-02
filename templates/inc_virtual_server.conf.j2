@@ -19,6 +19,7 @@ virtual_server {{ vip.vip }} {{ vip.port }} {
 {% if vip.check_script is defined %}
         MISC_CHECK {
           misc_path "/etc/keepalived/{{ vip.check_script }} {{ server.ip }} {{ server.port }}"
+          misc_timeout 30 #this value must be superior to check script internal timeout
         }
 {% else %}
         TCP_CHECK {
