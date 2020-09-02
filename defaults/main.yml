@@ -13,7 +13,7 @@ keepalived_vip: "192.168.100.1"
 keepalived_mode: "failover"
 
 # Failover options
-keepalived_process: "keepalived"
+keepalived_check_failover: "/usr/sbin/pidof keepalived"
 keepalived_vip: 192.168.100.1
 
 # HA options
