@@ -46,6 +46,14 @@
         mode: 0644
       notify: read conntrack
 
+    - name: Ensure LVS module is loaded at boot
+      copy:
+        content: "ip_vs"
+        dest: "/etc/modules-load.d/lvs.conf"
+        owner: "root"
+        group: "root"
+        mode: 0644
+
     - name: Enable masquerade
       firewalld:
         zone: trusted
