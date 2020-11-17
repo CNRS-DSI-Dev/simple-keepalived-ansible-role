@@ -1,5 +1,5 @@
-Role Name
-=========
+simple-keepalived-ansible-role
+==============================
 
 Ce rôle Anisble maintient un composant keepalived sur une machine virtuelle Red Hat. Deux usages de keepalived sont possibles, correspondant aux modes suivants :
 - Mode failover (par défaut) : Pour faire du failover automatique d'un service installé sur deux machines virtuelles. Les démons du service sont en actif-passif et keepalived doit être installé sur les deux machines virtuelles.
