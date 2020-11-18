@@ -20,4 +20,3 @@
     group: "root"
     mode: 0755
   with_fileglob: "check_*"
-

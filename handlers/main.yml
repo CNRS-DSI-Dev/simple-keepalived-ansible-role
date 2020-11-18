@@ -9,4 +9,3 @@
   systemd:
     name: rsyslog
     state: restarted
-

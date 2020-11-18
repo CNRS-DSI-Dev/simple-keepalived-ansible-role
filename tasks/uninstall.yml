@@ -1,4 +1,4 @@
---- 
+---
 # tasks file for uninstall
 - name: (uninstall) Stop keepalived if running
   systemd:
@@ -13,4 +13,3 @@
       - ipvsadm
     state: absent
     autoremove: yes
-
