@@ -37,14 +37,13 @@
 #network conf for ha mode
 - name: NAT configuration when high availability mode is enable
   block:
-    - name: Enable conntrack
-      copy:
-        content: "net.ipv4.vs.conntrack=1"
-        dest: "/etc/sysctl.d/conntrack.conf"
-        owner: "root"
-        group: "root"
-        mode: 0644
-      notify: read conntrack
+    - name: Ensure conntrack is enabled
+      sysctl:
+        name: net.ipv4.vs.conntrack
+        value: 1
+        sysctl_set: yes
+        state: present
+        reload: yes
 
     - name: Ensure LVS module is loaded at boot
       copy:
