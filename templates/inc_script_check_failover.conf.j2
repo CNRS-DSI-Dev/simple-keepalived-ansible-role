@@ -2,4 +2,5 @@
 vrrp_script check_failover {
         script "{{ keepalived_check_failover }}"
         interval {{ keepalived_check_interval }}
+        timeout 30
 }
