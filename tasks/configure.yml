@@ -1,4 +1,16 @@
 ---
+- name: When unicast enable, gather facts from hosts regardless of limit or tags
+  setup:
+  delegate_to: "{{ item }}"
+  delegate_facts: True
+  when: 
+    - hostvars[item]['ansible_default_ipv4'] is not defined
+    - keepalived_unicast|default(false)|bool
+  with_items:
+    - "{{ keepalived_master }}"
+    - "{{ keepalived_backup }}"
+  tags: always
+
 - name: Main configuration file from template
   template:
     src: "keepalived.conf.j2"
