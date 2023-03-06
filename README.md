@@ -18,8 +18,6 @@ Requirements
 
 Supporte Red Hat 7 et 8. Testé avec keepalived 1.3.5 et 2.0.10.
 
-Attention, si unicast actif alors le playbook a besoin des anisble_facts de l'ensemble des serveurs keepalived (à cause des peer address à remplir dans le fichier de conf). En d'autres termes, en unicast, il faut exécuter le playbook sur tous les LB en même temps (pas de serial 1).
-
 Mode failover : Role Variables
 --------------
 
