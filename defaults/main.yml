@@ -1,0 +1,42 @@
+---
+# defaults file for simple-keepalived-ansible-role
+
+# Require vars, please overide them
+keepalived_state: "present"
+keepalived_routerid: "50"
+keepalived_master: "localhost"
+keepalived_passwd: "toto"
+keepalived_interface: "eth0"
+
+# Mode failover or ha
+keepalived_mode: "failover"
+
+# Failover options
+keepalived_check_failover: "/usr/sbin/pidof keepalived"
+keepalived_vip: 192.168.100.1
+
+# HA options
+#keepalived_vip:
+#- name: "example"
+#  vip: 192.168.100.1
+#  port: 8080
+#  (check_script: "check_ldaps.sh")
+#  servers:
+#  - name: "node1"
+#    ip: 172.0.0.1
+#    port: 8080
+#    weight: 1
+
+# Optional vars
+keepalived_check_interval: "5"
+keepalived_master_priority: "100"
+keepalived_backup_priority: "1"
+keepalived_unicast: false
+keepalived_alert: false
+keepalived_mail: "keepalived@example.com"
+keepalived_admin: "admin@example.com"
+
+# Logging - by default in /var/log/messages
+# define keepalived_logfile variable if you want a dedicated logfile
+#keepalived_logfile: "/var/log/keepalived.log"
+keepalived_history: "2"

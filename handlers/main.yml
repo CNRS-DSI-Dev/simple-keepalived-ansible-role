@@ -1,0 +1,11 @@
+---
+# handlers file for simple-keepalived-ansible-role
+- name: restart keepalived
+  systemd:
+    name: keepalived
+    state: restarted
+
+- name: restart rsyslog
+  systemd:
+    name: rsyslog
+    state: restarted

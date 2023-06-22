@@ -1,0 +1,18 @@
+# Real router configuration
+global_defs {
+        router_id LVS-{{ inventory_hostname }}
+
+        smtp_server 127.0.0.1
+        smtp_connect_timeout 30
+        notification_email_from {{ keepalived_mail }}
+        notification_email {
+                {{ keepalived_admin }}
+        }
+{% if ansible_distribution_major_version >= "8" %}
+{% if keepalived_alert is defined and keepalived_alert is sameas true %}
+        smtp_alert true
+{% else %}
+	smtp_alert false
+{% endif %}
+{% endif %}
+}

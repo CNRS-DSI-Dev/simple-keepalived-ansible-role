@@ -1,0 +1,23 @@
+{{ ansible_managed | comment }}
+
+{#
+    Real router configuration : Node name, alert settings, etc
+#}
+{% include 'inc_global_defs.conf.j2' %}
+
+{# In failover mode, keepalived check local with custom script #}
+{% if keepalived_mode == "failover" %}
+{% include 'inc_script_check_failover.conf.j2' %}
+{% endif %}
+
+{#
+    Virtual router configuration : VIP, priority, etc
+#}
+{% include 'inc_vrrp_instance.conf.j2' %}
+
+{#
+    Virtual servers configuration
+#}
+{% if keepalived_mode == "ha" %}
+{% include 'inc_virtual_server.conf.j2' %}
+{% endif %}

@@ -1,0 +1,35 @@
+{% for vip in keepalived_vip %}
+# Virtual server {{ vip.name }}
+virtual_server {{ vip.vip }} {{ vip.port }} {
+    delay_loop 10 #interval check in seconds
+    protocol TCP
+    lvs_sched wrr #weighted round-robin
+    lvs_method NAT
+    persistence_timeout 7200
+    ha_suspend #if node is backup for current VIP, dont check real servers
+
+{% for server in vip.servers %}
+{% if server.weight == 0 %}
+    # backup real server if all other real servers are down
+    sorry_server {{ server.ip }} {{ server.port }}
+{% else %}
+    # {{ server.name }}
+    real_server {{ server.ip }} {{ server.port }} {
+        weight {{ server.weight }} #ratio used by lvs_scheduler
+{% if vip.check_script is defined %}
+        MISC_CHECK {
+          misc_path "/etc/keepalived/{{ vip.check_script }} {{ server.ip }} {{ server.port }}"
+          misc_timeout 30 #this value must be superior to check script internal timeout
+        }
+{% else %}
+        TCP_CHECK {
+          connect_port {{ server.port }}
+          connect_timeout 5
+        }
+{% endif %}
+    }
+{% endif %}
+{% endfor %}
+}
+
+{% endfor %}

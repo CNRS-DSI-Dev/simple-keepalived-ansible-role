@@ -1,0 +1,14 @@
+---
+# tasks file for simple-keepalived-ansible-role
+
+- name: Install keepalived
+  include: install.yml
+  when: keepalived_state == "present"
+
+- name: Configure failover
+  include: configure.yml
+  when: keepalived_state == "present"
+
+- name: Uninstall keepalived
+  include: uninstall.yml
+  when: keepalived_state == "absent"
