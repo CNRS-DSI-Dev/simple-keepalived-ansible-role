@@ -1,6 +1,5 @@
 galaxy_info:
   author: Gilian GAMBINI
-  role_name: simple-keepalived-ansible-role
   description: Maintain a keepalived used for failover or L4 loadbalancing on Red Hat
   license: GNU Affero General Public License v3.0
   company: DSI CNRS
